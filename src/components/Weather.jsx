@@ -7,11 +7,17 @@ import drizzle_icon from '../assets/drizzle.png'
 import rain_icon from '../assets/rain.png'
 import snow_icon from '../assets/snow.png'
 import wind_icon from '../assets/wind.png'
-import humidity_icon from '../assets/humidity.png'    
+import humidity_icon from '../assets/humidity.png' 
+import Autosuggest from 'react-autosuggest';
+import WeatherSearch from './WeatherSearch'
+//import cities from '../cities.json'
+
+
 
 
 const Weather = () => {
     const inputref =useRef()
+    const [city, setCity] = useState('');
 
     const[weatherData,setweatherData]= useState(false)
 
@@ -32,6 +38,8 @@ const allIcons ={
     "13n": snow_icon,
 
 }
+
+  
 const search = async(city)=>{
     if(city===""){
         alert("Please Enter City Name")
@@ -73,13 +81,26 @@ useEffect(()=>{
    search("West Bengal");  
 },[])
 
+const handleSearch = (city) => {
+    setCity(city);
+    search(city);
+  };
 
+ 
   return (
     <div className='weather'>
-        <div className='search-bar'>
-            <input ref={inputref} type='text' placeholder='Search'/>                                            
-            <img src={search_icon}alt=''  onClick={()=>search(inputref.current.value)}/>
-        </div>
+        {/* <div className='search-bar'>
+            <input ref={inputref} type='text' placeholder='Search' onSearch={handleSearch}  />                                            
+            <img src={search_icon}alt=''  onClick={()=>search(inputref.current.value)} />
+           
+     
+    
+   
+        </div> */}
+         <div>
+      <WeatherSearch onSearch={handleSearch} />
+      
+    </div>
         {weatherData ?<>
             <img src={weatherData.icon}alt='' className='weather-icon'/>
         <p className='temperature'>{weatherData.temperature}°c</p>
@@ -100,13 +121,17 @@ useEffect(()=>{
                     <p>{weatherData.windSpeed}km/h</p>
                     <span>Wind Speed</span>
                 </div>
+              
             </div>
+            
         </div>
+      
         </>:<></>}
       
    
     </div>
   )
 }
+
 
 export default Weather
